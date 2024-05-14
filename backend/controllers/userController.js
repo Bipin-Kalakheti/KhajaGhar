@@ -5,7 +5,34 @@ import validator from "validator";
 
 //Login User
 
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+	const {email, password} = req.body;
+	try {
+		// Check if all fields are entered
+		if (!email || !password) {
+			return res.json({ success: false, message: "Please enter all fields" });
+		}
+		// Validate email format
+		if (!validator.isEmail(email)) {
+			return res.json({ success: false, message: "Invalid email" });
+		}
+		// Check if user exists
+		const user = await userModel.findOne({ email });
+		if (!user) {
+			return res.json({ success: false, message: "User not found" });
+		}
+		// Compare password
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.json({ success: false, message: "Invalid credentials" });
+		}
+		const token = createToken(user._id);
+		res.json({ success: true, token, message: "User logged in successfully" });
+	} catch (error) {
+		console.log(error);
+		res.json({ success: false, message: "Error: Failed to login user" });
+	}
+};
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
