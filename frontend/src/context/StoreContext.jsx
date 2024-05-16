@@ -71,7 +71,7 @@ const StoreContextProvider = (props) => {
       }
     }
     loadData();
-  });
+  }, [token]);
   const contextValue = {
     food_list,
     cartItems,

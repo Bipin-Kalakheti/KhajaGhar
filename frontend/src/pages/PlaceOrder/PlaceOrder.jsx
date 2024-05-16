@@ -1,6 +1,7 @@
 import "./placeOrder.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
+import axios from "axios";
 
 const PlaceOrder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url } =
@@ -24,13 +25,44 @@ const PlaceOrder = () => {
     setDate((data) => ({ ...data, [name]: value }));
   };
 
- 
+  const placeOrder = async (e) => {
+    e.preventDefault();
+
+    let orderItems = [];
+    food_list.map((item) => {
+      if (cartItems[item._id] > 0) {
+        let itemInfo = item;
+        itemInfo["quantity"] = cartItems[item._id];
+        orderItems.push(itemInfo);
+      }
+    });
+    let orderData = {
+      address: data,
+      items: orderItems,
+      amount: getTotalCartAmount() + 2,
+    };
+    console.log("were here: " + orderData);
+    let response = await axios.post(url + "/api/order/placeOrder", orderData, {
+      headers: { token },
+    });
+    console.log("response is here: ####: " + response.data);
+    if (response.data.success) {
+      console.log("response is here: ####: " + response.data);
+      const { session_url } = response.data;
+      window.location.replace(session_url);
+      alert("Order Placed Successfully");
+    } else {
+      alert("Order Placed Failed");
+    }
+  };
+
   return (
-    <form action="" className="place-order">
+    <form onSubmit={placeOrder} action="" className="place-order">
       <div className="place-order-left">
         <p className="title">Delivery Information</p>
         <div className="multi-fields">
           <input
+            required
             name="firstName"
             onChange={onChangeHandler}
             value={data.firstName}
@@ -38,6 +70,7 @@ const PlaceOrder = () => {
             placeholder="First Name"
           />
           <input
+            required
             name="lastName"
             onChange={onChangeHandler}
             value={data.lastName}
@@ -46,6 +79,7 @@ const PlaceOrder = () => {
           />
         </div>
         <input
+          required
           name="email"
           onChange={onChangeHandler}
           value={data.email}
@@ -53,6 +87,7 @@ const PlaceOrder = () => {
           placeholder="Email Address"
         />
         <input
+          required
           name="street"
           onChange={onChangeHandler}
           value={data.street}
@@ -61,6 +96,7 @@ const PlaceOrder = () => {
         />
         <div className="multi-fields">
           <input
+            required
             name="city"
             onChange={onChangeHandler}
             value={data.city}
@@ -68,6 +104,7 @@ const PlaceOrder = () => {
             placeholder="City"
           />
           <input
+            required
             name="state"
             onChange={onChangeHandler}
             value={data.state}
@@ -77,6 +114,7 @@ const PlaceOrder = () => {
         </div>
         <div className="multi-fields">
           <input
+            required
             name="zipCode"
             onChange={onChangeHandler}
             value={data.zipCode}
@@ -84,6 +122,7 @@ const PlaceOrder = () => {
             placeholder="Zip Code"
           />
           <input
+            required
             name="country"
             onChange={onChangeHandler}
             value={data.country}
@@ -92,6 +131,7 @@ const PlaceOrder = () => {
           />
         </div>
         <input
+          required
           name="phone"
           onChange={onChangeHandler}
           value={data.phone}
@@ -118,7 +158,7 @@ const PlaceOrder = () => {
               </p>
             </div>
           </div>
-          <button onClick={() => "/order"}>PROCEED TO Payment</button>
+          <button type="submit">PROCEED TO Payment</button>
         </div>
       </div>
     </form>
