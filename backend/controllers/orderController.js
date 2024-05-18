@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 //Placing an order for frontend
 
 const placeOrder = async (req, res) => {
-  const frontend_url = process.env.FRONTEND_URL;
+  const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173/";
   try {
     const newOrder = new orderModel({
       userId: req.body.userId,
@@ -54,10 +54,11 @@ const placeOrder = async (req, res) => {
 };
 
 const verifyOrder = async (req, res) => {
+
   const { orderId, success } = req.body;
   try {
-    if (success) {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true});
+    if (success == "true") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
       res.json({ success: true, message: "Order placed successfully" });
     } else {
       await orderModel.findByIdAndDelete(orderId);
