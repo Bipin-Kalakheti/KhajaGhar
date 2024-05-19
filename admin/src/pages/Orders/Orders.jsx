@@ -22,6 +22,24 @@ const Orders = ({ url }) => {
     }
   };
 
+  const statusHandler = async (e, orderId) => {
+    console.log(e.target.value, orderId);
+    try {
+      const response = await axios.post(url + "/api/order/status", {
+        orderId,
+        status: e.target.value,
+      });
+      if (response.data.success) {
+        await fetchAllOrders();
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, []);
@@ -74,7 +92,10 @@ const Orders = ({ url }) => {
             </div>
             <p>Items: {order.items.length}</p>
             <p>${order.amount}</p>
-            <select>
+            <select
+              onChange={(event) => statusHandler(event, order._id)}
+              value={order.status}
+            >
               <option value="pending">Pending</option>
               <option value="delivered">Delivered</option>
               <option value="cancelled">Cancelled</option>
