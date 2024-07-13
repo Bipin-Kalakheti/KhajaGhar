@@ -2,8 +2,19 @@
   height: 34vw;
   margin: 30px auto;
   background: url("/header_img.png") no-repeat;
-  background-size: contain;
+  background-size: cover;
   position: relative;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Black with 50% opacity */
+  z-index: 1;
 }
 
 .header-contents {
@@ -16,6 +27,7 @@
   bottom: 10%;
   left: 6vw;
   animation: fadeIn 3s;
+  z-index: 2; /* Ensure contents are above the overlay */
 }
 
 .header-contents h2 {
@@ -39,26 +51,19 @@
   border-radius: 50px;
 }
 
-
 @media (max-width: 1050px) {
-  
-  .header-contents{
+  .header-contents {
     max-width: 45%;
-    
   }
-
 }
 @media (max-width: 750px) {
-  .header-contents{
+  .header-contents {
     max-width: 65%;
-    
   }
-  .header-contents p{
+  .header-contents p {
     display: none;
-
   }
-  .header-contents button{
+  .header-contents button {
     padding: 2vw 4vw;
   }
-
 }

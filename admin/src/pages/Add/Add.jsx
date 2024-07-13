@@ -9,7 +9,7 @@ const Add = ({ url }) => {
   const [data, setData] = useState({
     name: "",
     description: "",
-    category: "Salad",
+    category: "",
     price: "",
   });
 
@@ -33,7 +33,7 @@ const Add = ({ url }) => {
       setData({
         name: "",
         description: "",
-        category: "Salad",
+        category: "",
         price: "",
       });
       setImage(false);
@@ -88,12 +88,12 @@ const Add = ({ url }) => {
           <div className="add-category flex-col">
             <p>Product category</p>
             <select onChange={onChangeHandler} name="category" id="category">
-              <option value="Salad">Salad</option>
-              <option value="Rolls">Rolls</option>
-              <option value="Deserts">Deserts</option>
-              <option value="Cake">Cake</option>
+              <option value="Appetizers">Appetizers</option>
+              <option value="Authentic">Authentic Nepali</option>
+              <option value="Chicken">Chicken</option>
+              <option value="Drinks">Drinks</option>
               <option value="Pure Veg">Pure Veg</option>
-              <option value="Pasta">Pasta</option>
+              <option value="Sides">Sides</option>
               <option value="Noodles">Noodles</option>
               <option value="Dumplings">Dumplings</option>
             </select>
