@@ -6,16 +6,18 @@
   align-items: center;
   gap: 20px;
   padding: 20px 8vw;
-  padding-top: 80px;
+
   margin-top: 100px;
   p {
     margin-right: auto;
     margin-left: auto;
+    font-size: small;
   }
 
   .footer-logo {
     margin-left: auto;
     margin-right: auto;
+    width: 200px;
     max-width: 50vw;
   }
 }
